@@ -1,14 +1,10 @@
-# Imagen base de OpenJDK (elige una compatible con tu versión de Spring Boot)
-FROM eclipse-temurin:17-jdk
-
-# Establecer el directorio de trabajo en el contenedor
+FROM openjdk:17-jdk-slim AS build
 WORKDIR /app
+COPY . .
+RUN ./gradlew build
 
-# Copiar el archivo JAR de la aplicación al contenedor
-COPY build/libs/*.jar app.jar
-
-# Exponer el puerto en el que corre la aplicación
+FROM openjdk:17-jdk-slim
+WORKDIR /app
+COPY --from=build /app/build/libs/*.jar app.jar
 EXPOSE 8080
-
-# Comando para ejecutar la aplicación
 ENTRYPOINT ["java", "-jar", "app.jar"]
