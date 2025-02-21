@@ -17,6 +17,9 @@ import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 
+/**
+ * Controlador para operaciones relacionadas con vuelos.
+ */
 @RestController
 @RequestMapping("/api/v1")
 @Tag(name = "flights-controller", description = "Flight operations")
@@ -25,6 +28,14 @@ class FlightsController {
     @Autowired
     private lateinit var flightService: FlightService
 
+    /**
+     * Obtiene todos los vuelos disponibles en páginas de 10 elementos.
+     *
+     * @param page Número de página a obtener.
+     * @param pageSize Tamaño de la página.
+     * @param request Solicitud HTTP.
+     * @return Respuesta con la lista de vuelos.
+     */
     @GetMapping("/flights")
     @Operation(summary = "Fetch all available flight in pages of 10 elements")
     @ApiResponses(
@@ -54,6 +65,13 @@ class FlightsController {
         return ResponseEntity(response, HttpStatus.OK)
     }
 
+    /**
+     * Obtiene un vuelo por su identificador.
+     *
+     * @param id Identificador del vuelo.
+     * @param request Solicitud HTTP.
+     * @return Respuesta con el registro del vuelo.
+     */
     @GetMapping("/flights/{id}")
     @Operation(summary = "Fetch single flight by Id")
     @ApiResponses(
@@ -79,6 +97,15 @@ class FlightsController {
         return ResponseEntity(registryOptional, HttpStatus.OK)
     }
 
+    /**
+     * Obtiene vuelos por origen, destino o ambos.
+     *
+     * @param origin Origen del vuelo.
+     * @param destination Destino del vuelo.
+     * @param page Número de página a obtener.
+     * @param request Solicitud HTTP.
+     * @return Respuesta con la lista de vuelos.
+     */
     @GetMapping("/flights/routes")
     @Operation(summary = "Fetch flights by origin, destination or both at the same time.")
     @ApiResponses(
@@ -114,6 +141,15 @@ class FlightsController {
         return ResponseEntity(registryResponse, HttpStatus.OK)
     }
 
+    /**
+     * Filtra vuelos por año, mes o ambos.
+     *
+     * @param year Año del vuelo.
+     * @param page Número de página a obtener.
+     * @param month Mes del vuelo.
+     * @param request Solicitud HTTP.
+     * @return Respuesta con la lista de vuelos.
+     */
     @GetMapping("/flights/year")
     @Operation(summary = "Filter flights by year, by month or both")
     @ApiResponses(
@@ -144,6 +180,12 @@ class FlightsController {
         return ResponseEntity(response, HttpStatus.OK)
     }
 
+    /**
+     * Obtiene el vuelo con la mayor cantidad de pasajeros.
+     *
+     * @param request Solicitud HTTP.
+     * @return Respuesta con el vuelo con más pasajeros.
+     */
     @GetMapping("/flights/maxPax")
     @Operation(summary = "Fetch flight wit max amount of passengers")
     @ApiResponses(
@@ -171,6 +213,13 @@ class FlightsController {
         return ResponseEntity(response, HttpStatus.OK)
     }
 
+    /**
+     * Agrega un nuevo registro de vuelo. Endpoint protegido solo para claves de administrador.
+     *
+     * @param registry Registro del vuelo a agregar.
+     * @param request Solicitud HTTP.
+     * @return Respuesta con el resultado de la operación.
+     */
     @PostMapping("/addRegistry")
     @Operation(summary = "Add a new flight, endpoint protected by Admin key only.")
     @ApiResponses(

@@ -21,6 +21,9 @@ import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 
+/**
+ * Controlador para operaciones de claves API, asegurado por clave de administrador.
+ */
 @RestController
 @RequestMapping("/api-keys")
 @Tag(name = "api-key controller", description = "Api key operations controller secured by Admin key")
@@ -29,6 +32,13 @@ class ApiKeyController {
     @Autowired
     lateinit var apiKeyService: ApiKeyService
 
+    /**
+     * Obtiene una clave API por su ID.
+     *
+     * @param id El ID de la clave API.
+     * @param request La solicitud HTTP.
+     * @return ResponseEntity con la clave API o un error si no se encuentra.
+     */
     @GetMapping("/{id}")
     @Operation(summary = "Fetch api-key by ID")
     @ApiResponses(
@@ -61,6 +71,12 @@ class ApiKeyController {
         ), NOT_FOUND)
     }
 
+    /**
+     * Obtiene todas las claves API disponibles.
+     *
+     * @param request La solicitud HTTP.
+     * @return ResponseEntity con todas las claves API o un error si ocurre un problema.
+     */
     @GetMapping("/registries")
     @Operation(summary = "Fetch al api-keys available")
     @ApiResponses(

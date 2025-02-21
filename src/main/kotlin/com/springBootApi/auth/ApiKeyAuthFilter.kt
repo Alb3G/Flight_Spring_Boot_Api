@@ -14,11 +14,26 @@ import org.springframework.web.filter.OncePerRequestFilter
 import java.io.IOException
 import java.time.LocalDateTime
 
+/**
+ * Filtro de autenticación basado en API Key.
+ * Este filtro se ejecuta una vez por solicitud y verifica la validez de la API Key.
+ *
+ * @property apiKeyService Servicio para manejar las API Keys.
+ */
 @Component
 class ApiKeyAuthFilter(
     private val apiKeyService: ApiKeyService,
 ) : OncePerRequestFilter() {
 
+    /**
+     * Método que realiza el filtrado interno de la solicitud.
+     *
+     * @param request La solicitud HTTP.
+     * @param response La respuesta HTTP.
+     * @param filterChain La cadena de filtros.
+     * @throws ServletException Si ocurre un error en el servlet.
+     * @throws IOException Si ocurre un error de entrada/salida.
+     */
     @Throws(ServletException::class, IOException::class)
     override fun doFilterInternal(
         request: HttpServletRequest,

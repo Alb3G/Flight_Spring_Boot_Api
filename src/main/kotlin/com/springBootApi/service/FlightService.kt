@@ -12,11 +12,21 @@ import org.springframework.http.HttpStatus.*
 import org.springframework.stereotype.Service
 import java.time.LocalDate
 
+/**
+ * Servicio para gestionar los registros de vuelos.
+ */
 @Service
 class FlightService(
     private val flightsRepository: FlightsRepository,
 ) {
 
+    /**
+     * Agrega un nuevo registro de vuelo.
+     *
+     * @param flightRegistry El registro de vuelo a agregar.
+     * @param request La solicitud HTTP.
+     * @return Un modelo de respuesta con el registro guardado.
+     */
     fun addRegistry(flightRegistry: FlightRegistry, request: HttpServletRequest): ResponseModel {
         val savedRegistry = flightsRepository.save(flightRegistry)
 
@@ -31,6 +41,14 @@ class FlightService(
         )
     }
 
+    /**
+     * Encuentra todos los registros de vuelos paginados.
+     *
+     * @param page El número de página.
+     * @param pageSize El tamaño de la página.
+     * @param request La solicitud HTTP.
+     * @return Un modelo de respuesta con los registros de vuelos.
+     */
     fun findAll(page: Int, pageSize: Int, request: HttpServletRequest): ResponseModel {
         // Tenemos que restar 1 porque las páginas en Mongo empiezan desde 0
         val pageable = PageRequest.of(if (page < 1) 1 else page, pageSize)
@@ -75,6 +93,13 @@ class FlightService(
         )
     }
 
+    /**
+     * Encuentra un registro de vuelo por su ID.
+     *
+     * @param id El ID del registro de vuelo.
+     * @param request La solicitud HTTP.
+     * @return Un modelo de respuesta con el registro de vuelo encontrado.
+     */
     fun findRegistryById(id: String, request: HttpServletRequest): ResponseModel {
         val flightRegistry = flightsRepository.findById(id)
         if (!flightRegistry.isPresent)
@@ -89,6 +114,16 @@ class FlightService(
         return flightRegistry.get()
     }
 
+    /**
+     * Encuentra registros de vuelos por origen y destino.
+     *
+     * @param origin El origen del vuelo.
+     * @param destination El destino del vuelo.
+     * @param request La solicitud HTTP.
+     * @param page El número de página.
+     * @param pageSize El tamaño de la página.
+     * @return Un modelo de respuesta con los registros de vuelos encontrados.
+     */
     fun findByOriginAndDestination(
         origin: String =  "",
         destination: String = "",
@@ -150,6 +185,16 @@ class FlightService(
         return response
     }
 
+    /**
+     * Encuentra registros de vuelos por año y mes.
+     *
+     * @param year El año del vuelo.
+     * @param month El mes del vuelo.
+     * @param page El número de página.
+     * @param pageSize El tamaño de la página.
+     * @param request La solicitud HTTP.
+     * @return Un modelo de respuesta con los registros de vuelos encontrados.
+     */
     fun findBySeason(
         year: Int,
         month: Int = 0,
@@ -239,6 +284,12 @@ class FlightService(
         )
     }
 
+    /**
+     * Encuentra el vuelo con el máximo número de pasajeros.
+     *
+     * @param request La solicitud HTTP.
+     * @return Un modelo de respuesta con el vuelo encontrado.
+     */
     fun findMaxPaxFlight(request: HttpServletRequest): ResponseModel {
         val flight = flightsRepository.findMaxPaxFlight()
             ?: return ErrorResponse(
@@ -260,6 +311,13 @@ class FlightService(
         )
     }
 
+    /**
+     * Inicializa la página de ubicación según el origen y destino.
+     *
+     * @param origin El origen del vuelo.
+     * @param destination El destino del vuelo.
+     * @return Un entero que representa el caso de uso.
+     */
     private fun initializeLocationPage(origin: String, destination: String): Int {
         return when {
             origin.isNotBlank() && destination.isBlank() -> 0  // Filtrar solo por origen
@@ -269,6 +327,13 @@ class FlightService(
         }
     }
 
+    /**
+     * Inicializa la página de temporada según el año y mes.
+     *
+     * @param year El año del vuelo.
+     * @param month El mes del vuelo.
+     * @return Un entero que representa el caso de uso.
+     */
     private fun initializeSeasonPage(year: Int, month: Int): Int {
         val currentYear = LocalDate.now().year
         val yearInRange = year in 2019..currentYear

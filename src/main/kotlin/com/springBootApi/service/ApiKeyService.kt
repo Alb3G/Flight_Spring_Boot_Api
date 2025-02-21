@@ -8,16 +8,39 @@ import org.springframework.data.domain.PageRequest
 import org.springframework.http.HttpStatus
 import org.springframework.stereotype.Service
 
+/**
+ * Servicio para gestionar las claves API.
+ */
 @Service
 class ApiKeyService {
 
     @Autowired
     lateinit var apiKeyRepository: ApiKeyRepository
 
+    /**
+     * Encuentra una clave API por su valor.
+     *
+     * @param key El valor de la clave API.
+     * @return La clave API encontrada.
+     */
     fun findByKey(key: String) = apiKeyRepository.findByKey(key)
 
+    /**
+     * Encuentra una clave API por su ID.
+     *
+     * @param id El ID de la clave API.
+     * @return La clave API encontrada.
+     */
     fun findById(id: String) = apiKeyRepository.findById(id)
 
+    /**
+     * Encuentra todas las claves API con paginación.
+     *
+     * @param request La solicitud HTTP.
+     * @param page El número de página.
+     * @param pageSize El tamaño de la página.
+     * @return Un modelo de respuesta con las claves API encontradas.
+     */
     fun findAll(request: HttpServletRequest, page: Int = 1, pageSize: Int = 10): ResponseModel {
         val pageable = PageRequest.of((page - 1).coerceAtLeast(0), pageSize)
         val pageResult = apiKeyRepository.findAll(pageable)
@@ -49,13 +72,32 @@ class ApiKeyService {
         }
     }
 
+    /**
+     * Guarda una clave API.
+     *
+     * @param apiKey La clave API a guardar.
+     * @return La clave API guardada.
+     */
     fun saveApiKey(apiKey: ApiKey): ApiKey = apiKeyRepository.save(apiKey)
 
+    /**
+     * Crea una nueva clave API con un rol específico.
+     *
+     * @param role El rol de la clave API.
+     * @return La clave API creada.
+     */
     fun createApiKey(role: ApiKeyRole = ApiKeyRole.CLIENT): ApiKey {
         val apikey = ApiKey(role = role)
         return saveApiKey(apiKey = apikey)
     }
 
+    /**
+     * Asigna una clave API a un usuario.
+     *
+     * @param user El usuario al que se le asignará la clave API.
+     * @param key La clave API a asignar.
+     * @return El usuario con la clave API asignada.
+     */
     fun assignKeyToUser(user: User, key: ApiKey): User {
         return user.copy(key = key)
     }

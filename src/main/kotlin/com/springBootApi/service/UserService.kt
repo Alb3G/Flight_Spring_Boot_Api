@@ -8,12 +8,25 @@ import jakarta.servlet.http.HttpServletRequest
 import org.springframework.http.HttpStatus.*
 import org.springframework.stereotype.Service
 
+/**
+ * Servicio para la gestión de usuarios.
+ *
+ * @property userRepository Repositorio de usuarios.
+ * @property apiKeyService Servicio para la gestión de claves API.
+ */
 @Service
 class UserService(
     private val userRepository: UserRepository,
     private val apiKeyService: ApiKeyService
 ) {
 
+    /**
+     * Crea un nuevo usuario.
+     *
+     * @param user Datos del usuario a crear.
+     * @param request Solicitud HTTP.
+     * @return Modelo de respuesta con el resultado de la operación.
+     */
     fun createUser(user: User, request: HttpServletRequest): ResponseModel {
         val userExist = userRepository.existsByEmail(user.email)
 
@@ -50,6 +63,14 @@ class UserService(
         )
     }
 
+    /**
+     * Valida las credenciales de un usuario.
+     *
+     * @param email Correo electrónico del usuario.
+     * @param password Contraseña del usuario.
+     * @param request Solicitud HTTP.
+     * @return Modelo de respuesta con el resultado de la operación.
+     */
     fun validateUser(email: String, password: String, request: HttpServletRequest): ResponseModel {
         val user = userRepository.findByEmail(email)
         if (user == null)
@@ -75,6 +96,4 @@ class UserService(
             user = user
         )
     }
-
-    fun findByEmail(email: String) = userRepository.findByEmail(email)
 }
