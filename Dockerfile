@@ -15,6 +15,9 @@ ENV PATH="/opt/gradle/bin:${PATH}"
 COPY . .
 RUN ./gradlew bootJar --no-daemon
 
+# Verificar si el JAR se ha generado correctamente
+RUN ls -l build/libs
+
 FROM openjdk:21-jdk-slim
 EXPOSE 8080
 
