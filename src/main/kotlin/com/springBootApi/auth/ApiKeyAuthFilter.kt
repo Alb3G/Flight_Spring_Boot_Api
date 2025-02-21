@@ -24,7 +24,6 @@ import java.time.LocalDateTime
 class ApiKeyAuthFilter(
     private val apiKeyService: ApiKeyService,
 ) : OncePerRequestFilter() {
-
     /**
      * Método que realiza el filtrado interno de la solicitud.
      *
