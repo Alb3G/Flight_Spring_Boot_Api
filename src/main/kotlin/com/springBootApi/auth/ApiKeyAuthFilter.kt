@@ -48,7 +48,9 @@ class ApiKeyAuthFilter(
             "/webjars/",
             "/swagger-resources/",
             "/api/v1/register",
-            "/api/v1/accountInfo"
+            "/api/v1/accountInfo",
+            "/web",
+            "/flight"
         )
 
         val apiKey = request.getHeader("X-API-KEY")

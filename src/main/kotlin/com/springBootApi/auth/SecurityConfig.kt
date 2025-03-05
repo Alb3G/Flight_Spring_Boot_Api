@@ -28,13 +28,13 @@ class SecurityConfig {
             .cors {  } // Habilitar CORS
             .csrf { it.disable() } // Deshabilitar CSRF para permitir peticiones externas
             .authorizeHttpRequests {
+                it.requestMatchers("/web/**").permitAll()
                 it.requestMatchers(
                     "/swagger-ui/**",
                     "/swagger-ui.html",
                     "/v1/api-docs/**",
                     "/webjars/**"
                 ).permitAll() // Permitir Swagger sin autenticación
-
                 it.requestMatchers("/api/v1/register").permitAll()
                 it.requestMatchers("/api/v1/accountInfo").permitAll()
                 it.requestMatchers("/api/v1/test/hello").permitAll()
@@ -44,7 +44,6 @@ class SecurityConfig {
             }
             .sessionManagement { it.sessionCreationPolicy(SessionCreationPolicy.STATELESS) } // Sin sesiones
             .addFilterBefore(ApiKeyAuthFilter(apiKeyService), UsernamePasswordAuthenticationFilter::class.java) // Agregar después de `permitAll()`
-
         return http.build()
     }
 

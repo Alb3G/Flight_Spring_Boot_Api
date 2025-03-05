@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Error</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f8d7da;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .error-container {
+            background: #fff;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            padding: 20px;
+            text-align: center;
+            max-width: 400px;
+        }
+        .error-icon {
+            font-size: 50px;
+            color: #d9534f;
+        }
+        .error-message {
+            font-size: 18px;
+            font-weight: bold;
+            color: #721c24;
+        }
+        .error-detail {
+            font-size: 14px;
+            color: #666;
+            margin-top: 10px;
+        }
+        .error-timestamp {
+            font-size: 12px;
+            color: #888;
+            margin-top: 15px;
+        }
+        .back-button {
+            display: inline-block;
+            margin-top: 15px;
+            padding: 10px 15px;
+            background-color: #d9534f;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+        }
+        .back-button:hover {
+            background-color: #c9302c;
+        }
+    </style>
+</head>
+<body>
+<div class="error-container">
+    <div class="error-icon">&#9888;</div>
+    <p class="error-message" th:text="${error.errMessage}">Error inesperado</p>
+    <p class="error-detail"><strong>Código:</strong> <span th:text="${error.code}"></span></p>
+    <p class="error-detail"><strong>Detalle:</strong> <span th:text="${error.detail}"></span></p>
+    <p class="error-detail"><strong>Ruta:</strong> <span th:text="${error.path}"></span></p>
+    <p class="error-detail"><strong>Método:</strong> <span th:text="${error.method}"></span></p>
+    <p class="error-timestamp">Fecha: <span th:text="${error.timeStamp}"></span></p>
+    <a href="/" class="back-button">Volver al inicio</a>
+</div>
+</body>
+</html>

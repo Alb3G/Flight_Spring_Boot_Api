@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <title>Home - Flights</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            max-width: 1200px;
+            margin: auto;
+        }
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            padding: 20px;
+        }
+        .card {
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            padding: 20px 13px;
+            text-align: center;
+            transition: transform 0.3s;
+        }
+        .card:hover {
+            transform: scale(1.05);
+        }
+        .card h2 {
+            margin: 0;
+            color: #333;
+        }
+        .card p {
+            color: #666;
+            margin: 5px 0;
+        }
+        .view-button {
+            background: #007bff;
+            color: white;
+            padding: 10px;
+            text-decoration: none;
+            border-radius: 5px;
+            display: inline-block;
+            margin-top: 10px;
+        }
+        .view-button:hover {
+            background: #0056b3;
+        }
+        .center{
+            text-align: center;
+        }
+        .pagination {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 15px;
+            margin-top: 30px;
+            padding: 15px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            width: fit-content;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .page-link {
+            background-color: #007bff;
+            color: white;
+            padding: 10px 15px;
+            text-decoration: none;
+            border-radius: 5px;
+            border: none;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+
+        .page-link:hover {
+            background-color: #0056b3;
+        }
+
+        #page-info {
+            font-size: 18px;
+            font-weight: bold;
+            color: #333;
+        }
+
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1 class="center">Lista de Vuelos</h1>
+    <div class="grid">
+        <div class="card" th:each="flight : ${flights}">
+            <h2>
+                <i class="fas fa-plane-departure" style="padding-right: 5px"></i> <span th:text="${flight.origin}"></span> → <span th:text="${flight.destination}"></span>
+            </h2>
+            <p><strong>Año:</strong> <span th:text="${flight.year}"></span></p>
+            <p><strong>Pasajeros:</strong> <span th:text="${flight.passengers}"></span></p>
+            <a th:href="@{'/web/flight/' + ${flight._id}}" class="view-button">Ver detalles</a>
+        </div>
+    </div>
+    <div class="pagination">
+        <a id="prevPage" class="page-link"
+           th:href="@{/web/home(page=${currentPage - 1})}"
+           th:if="${currentPage > 1}">
+            Anterior
+        </a>
+
+        <span id="page-info" th:text="${currentPage} + ' de ' + ${totalPages}"></span>
+
+        <a id="nextPage" class="page-link"
+           th:href="@{/web/home(page=${currentPage + 1})}"
+           th:if="${currentPage < totalPages}">
+            Siguiente
+        </a>
+    </div>
+
+</div>
+</body>
+</html>
