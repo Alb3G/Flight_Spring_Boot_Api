@@ -12,6 +12,9 @@ import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestParam
 
+/**
+ * Controlador web para manejar las solicitudes relacionadas con los vuelos.
+ */
 @Controller
 @RequestMapping("/web")
 class WebController {
@@ -19,6 +22,15 @@ class WebController {
     @Autowired
     private lateinit var flightService: FlightService
 
+    /**
+     * Maneja la solicitud GET para la página de inicio.
+     *
+     * @param model El modelo para la vista.
+     * @param request La solicitud HTTP.
+     * @param page El número de página (por defecto es 1).
+     * @param pageSize El tamaño de la página (por defecto es 10).
+     * @return El nombre de la vista a renderizar.
+     */
     @GetMapping("/home")
     fun home(
         model: Model,
@@ -41,7 +53,14 @@ class WebController {
         return "home"
     }
 
-
+    /**
+     * Maneja la solicitud GET para los detalles de un vuelo específico.
+     *
+     * @param id El ID del vuelo.
+     * @param request La solicitud HTTP.
+     * @param model El modelo para la vista.
+     * @return El nombre de la vista a renderizar.
+     */
     @GetMapping("/flight/{id}")
     fun flightDetail(
         @PathVariable("id") id: String,
